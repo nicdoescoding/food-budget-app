@@ -1,40 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Food Budget</title>
+
 <style>
 :root {
-  --bg: #020617;
-  --card: #0f172a;
-  --bg: #030712;
+ --bg: #030712;
   --card: rgba(15, 23, 42, 0.68);
   --accent: #22c55e;
-  --text: #e5e7eb;
   --accent-2: #34d399;
   --text: #ecfeff;
   --muted: #94a3b8;
-  --border: #1e293b;
   --border: rgba(148, 163, 184, 0.22);
   --shadow: 0 22px 80px rgba(2, 6, 23, 0.65);
 }
 
 * { box-sizing: border-box; }
-  
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-  
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #020617, #020617);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
   color: var(--text);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  padding: 26px;
+    padding: 26px;
   background:
     radial-gradient(900px 500px at 8% 0%, rgba(52, 211, 153, 0.2), transparent 55%),
     radial-gradient(900px 500px at 100% 100%, rgba(34, 197, 94, 0.2), transparent 58%),
@@ -70,12 +64,8 @@ body::after {
 
 .app {
   width: 100%;
-  max-width: 420px;
   max-width: 470px;
   background: var(--card);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 24px;
@@ -101,27 +91,20 @@ body::after {
 }
 
 h1 {
-  font-size: 22px;
   font-size: clamp(24px, 3vw, 28px);
   letter-spacing: 0.2px;
   text-align: center;
-  margin-bottom: 6px;
   margin: 0;
 }
 
 .subtitle {
   text-align: center;
   font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 24px;
   color: #cbd5e1;
   margin: 8px 0 24px;
 }
 
 label {
-  font-size: 13px;
-  color: var(--muted);
-  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
@@ -131,63 +114,37 @@ label {
 }
 
 input, select {
-input,
-select {
   width: 100%;
   padding: 12px 14px;
   margin-top: 6px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: #020617;
-  padding: 13px 14px;
-  margin-top: 8px;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  background: rgba(2, 6, 23, 0.7);
   color: var(--text);
   font-size: 16px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-}
-
-input::placeholder {
-  color: #6b7280;
 }
 
 input:focus, select:focus {
-input:focus,
-select:focus {
   outline: none;
   border-color: var(--accent);
-  border-color: rgba(52, 211, 153, 0.8);
-  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.17);
-  transform: translateY(-1px);
 }
 
 .row {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  width: 100%;
   margin-top: 22px;
   padding: 14px;
   border-radius: 14px;
   border: none;
   background: var(--accent);
-  border: 0;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
   color: #052e16;
   font-size: 16px;
   font-weight: 600;
-  font-weight: 700;
-  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.3);
-}
-
-button:hover {
-  filter: brightness(1.04);
-  transform: translateY(-1px);
-}
-
-button:active {
-  transform: translateY(0);
 }
 
 button.secondary {
@@ -195,15 +152,6 @@ button.secondary {
   border: 1px solid var(--border);
   color: var(--muted);
   margin-top: 10px;
-  background: rgba(15, 23, 42, 0.68);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  color: #cbd5e1;
-  margin-top: 12px;
-  box-shadow: none;
-}
-
-button.secondary:hover {
-  border-color: rgba(52, 211, 153, 0.55);
 }
 
 .result {
@@ -212,14 +160,8 @@ button.secondary:hover {
   border-radius: 14px;
   background: #020617;
   border: 1px solid var(--border);
-  margin-top: 24px;
-  padding: 20px;
-  border-radius: 16px;
-  background: linear-gradient(140deg, rgba(2, 6, 23, 0.8), rgba(10, 20, 40, 0.85));
-  border: 1px solid rgba(74, 222, 128, 0.28);
   text-align: center;
   display: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .amount {
@@ -227,48 +169,115 @@ button.secondary:hover {
   font-weight: 700;
   color: var(--accent);
   margin: 6px 0;
-  font-size: 32px;
-  font-weight: 800;
-  color: #6ee7b7;
-  margin: 8px 0;
-  letter-spacing: 0.3px;
 }
 
 .small {
   font-size: 13px;
   color: var(--muted);
-  color: #9fb3ca;
 }
 
 footer {
   margin-top: 14px;
-  margin-top: 16px;
   font-size: 12px;
   text-align: center;
   color: var(--muted);
-  color: #8ea3bb;
-}
-
-@media (max-width: 520px) {
-  .app {
-    padding: 22px;
-    border-radius: 20px;
-  }
-
-  .row {
-    flex-direction: column;
-    gap: 0;
-  }
 }
 </style>
 </head>
+
+<body>
+<div class="app">
+  <h1>Daily Food Budget</h1>
+  <div class="subtitle">Plan smart. Save intentionally.</div>
+
+  <label>Total Budget (RM)</label>
+  <input type="number" id="budget" step="0.01" placeholder="e.g. 900">
+
+  <div class="row">
+    <div style="flex:1">
+      <label>Start Date</label>
+      <input type="date" id="start">
+    </div>
+    <div style="flex:1">
+      <label>End Date</label>
+      <input type="date" id="end">
+    </div>
+  </div>
+
+  <button class="secondary" onclick="useToday()">Use Today as Start Date</button>
+
+  <label>Include Today?</label>
+  <select id="includeToday">
+    <option value="yes">Yes</option>
+    <option value="no">No</option>
+  </select>
+
+  <label>Days Food Is Covered</label>
+  <input type="number" id="covered" value="0">
+
+  <label>Savings Mode</label>
+  <select id="savingMode">
+    <option value="none">No savings</option>
+    <option value="daily">Save RM per day</option>
+    <option value="total">Save RM total</option>
+  </select>
+
+  <label>Savings Amount (RM)</label>
+  <input type="number" id="savingAmount" value="0">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="result" id="result">
+    <div class="small">You can spend</div>
+    <div class="amount" id="perDay"></div>
+    <div class="small" id="summary"></div>
+  </div>
+
+  <footer>All calculations stay on your device</footer>
 </div>
 
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-
 function useToday() {
   const today = new Date().toISOString().split("T")[0];
   document.getElementById("start").value = today;
+}
+
+function calculate() {
+  const budget = parseFloat(document.getElementById("budget").value);
+  const start = new Date(document.getElementById("start").value);
+  const end = new Date(document.getElementById("end").value);
+  const includeToday = document.getElementById("includeToday").value;
+  const covered = parseInt(document.getElementById("covered").value);
+  const savingMode = document.getElementById("savingMode").value;
+  const savingAmount = parseFloat(document.getElementById("savingAmount").value);
+
+  if (isNaN(budget) || !start || !end) return;
+
+  let totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+  if (includeToday === "no") totalDays--;
+
+  let spendingDays = totalDays - covered;
+  if (spendingDays <= 0) return;
+
+  let totalSavings = 0;
+
+  if (savingMode === "daily") {
+    totalSavings = savingAmount * spendingDays;
+  } else if (savingMode === "total") {
+    totalSavings = savingAmount;
+  }
+
+  const remainingForFood = budget - totalSavings;
+  if (remainingForFood <= 0) return;
+
+  const perDay = (remainingForFood / spendingDays).toFixed(2);
+
+  document.getElementById("perDay").innerText = `RM ${perDay}`;
+  document.getElementById("summary").innerText =
+    `After saving RM ${totalSavings.toFixed(2)} total`;
+  document.getElementById("result").style.display = "block";
+}
+</script>
+</body>
+</html>
+
