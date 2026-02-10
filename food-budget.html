@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Food Budget</title>
+
+<style>
+:root {
+  --bg: #020617;
+  --card: #0f172a;
+  --accent: #22c55e;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --border: #1e293b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #020617, #020617);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.app {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+h1 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 16px;
+  display: block;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #020617;
+  color: var(--text);
+  font-size: 16px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--accent);
+  color: #052e16;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.result {
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #020617;
+  border: 1px solid var(--border);
+  text-align: center;
+  display: none;
+}
+
+.amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 6px 0;
+}
+
+.small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+footer {
+  margin-top: 14px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--muted);
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Daily Food Budget</h1>
+  <div class="subtitle">Plan smart. Save intentionally.</div>
+
+  <label>Total Budget (RM)</label>
+  <input type="number" id="budget" step="0.01" placeholder="e.g. 900">
+
+  <div class="row">
+    <div style="flex:1">
+      <label>Start Date</label>
+      <input type="date" id="start">
+    </div>
+    <div style="flex:1">
+      <label>End Date</label>
+      <input type="date" id="end">
+    </div>
+  </div>
+
+  <button class="secondary" onclick="useToday()">Use Today as Start Date</button>
+
+  <label>Include Today?</label>
+  <select id="includeToday">
+    <option value="yes">Yes</option>
+    <option value="no">No</option>
+  </select>
+
+  <label>Days Food Is Covered</label>
+  <input type="number" id="covered" value="0">
+
+  <label>Savings Mode</label>
+  <select id="savingMode">
+    <option value="none">No savings</option>
+    <option value="daily">Save RM per day</option>
+    <option value="total">Save RM total</option>
+  </select>
+
+  <label>Savings Amount (RM)</label>
+  <input type="number" id="savingAmount" value="0">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="result" id="result">
+    <div class="small">You can spend</div>
+    <div class="amount" id="perDay"></div>
+    <div class="small" id="summary"></div>
+  </div>
+
+  <footer>All calculations stay on your device</footer>
+</div>
+
+<script>
+function useToday() {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("start").value = today;
+}
+
+function calculate() {
+  const budget = parseFloat(document.getElementById("budget").value);
+  const start = new Date(document.getElementById("start").value);
+  const end = new Date(document.getElementById("end").value);
+  const includeToday = document.getElementById("includeToday").value;
+  const covered = parseInt(document.getElementById("covered").value);
+  const savingMode = document.getElementById("savingMode").value;
+  const savingAmount = parseFloat(document.getElementById("savingAmount").value);
+
+  if (isNaN(budget) || !start || !end) return;
+
+  let totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+  if (includeToday === "no") totalDays--;
+
+  let spendingDays = totalDays - covered;
+  if (spendingDays <= 0) return;
+
+  let totalSavings = 0;
+
+  if (savingMode === "daily") {
+    totalSavings = savingAmount * spendingDays;
+  } else if (savingMode === "total") {
+    totalSavings = savingAmount;
+  }
+
+  const remainingForFood = budget - totalSavings;
+  if (remainingForFood <= 0) return;
+
+  const perDay = (remainingForFood / spendingDays).toFixed(2);
+
+  document.getElementById("perDay").innerText = `RM ${perDay}`;
+  document.getElementById("summary").innerText =
+    `After saving RM ${totalSavings.toFixed(2)} total`;
+  document.getElementById("result").style.display = "block";
+}
+</script>
+</body>
+</html>
